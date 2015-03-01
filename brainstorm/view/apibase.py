@@ -3,7 +3,7 @@ from distill.exceptions import HTTPNotFound, HTTPUnauthorized, HTTPInternalServe
 from distill.renderers import renderer
 import sys
 from brainstorm.sql import User, Session, APIToken
-from brainstorm.utils import RESTful
+from brainstorm.utils import RESTful, auth_required
 from passlib.hash import pbkdf2_sha512
 import hashlib
 
@@ -37,3 +37,12 @@ class APIController(object):
                     return HTTPInternalServerError()
                 return {"token": token}
         return HTTPUnauthorized()
+
+    @RESTful(['GET', 'POST'])
+    @auth_required
+    @renderer('prettyjson')
+    def get_user(self, request, response):
+        user = Session().query(User).filter(User.id == int(request.matchdict['userid'])).scalar()
+        if not user:
+            raise HTTPNotFound()
+        return user
