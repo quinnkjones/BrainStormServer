@@ -18,15 +18,22 @@ class Comment(DecBase):
         self.ideaid = idea
         self.message = message
 
+    def json(self, request):
+        return {
+            "idea": request.url('get_idea', ideaid=self.ideaid),
+            "user": request.url('user', userid=self.userid),
+            "message": self.message
+        }
+
 
 class Commit(DecBase):
     __tablename__ = "commits"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     ideaid = Column(Integer, ForeignKey('ideas.id'))
-    idea = relationship('Idea', backref='comments')
+    idea = relationship('Idea', backref='commits')
     userid = Column(Integer, ForeignKey('users.id'))
-    user = relationship('User', backref='comments')
+    user = relationship('User', backref='commits')
     message = Column(String(1024))
     progress = Column(Integer)
 

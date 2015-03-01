@@ -1,22 +1,38 @@
 from sqlalchemy import String, Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from brainstorm.sql import DecBase
+import time
 
 
 class Idea(DecBase):
-    __tablename__ = "idea"
+    __tablename__ = "ideas"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(256))
     desc = Column(String(1024))
     userid = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref='ideas')
+    timestamp = Column(Integer)
 
-    def __init__(self, title, description, userid, progress=0):
+    def __init__(self, title, description, userid, progress=0, timestamp=None):
         self.title = title
         self.desc = description
         self.userid = userid
         self.progress = progress
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = round(time.time())
+
+    def json(self, request):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "desc": self.desc,
+            "user": request.url('user', userid=self.userid),
+            "media": [request.url('media_obj', mid=i.id, qualified=True) for i in self.media],
+            "comments": [request.url('get_comment', cid=i.id, qualified=True) for i in self.comments]
+        }
 
 
 class Media(DecBase):
@@ -27,11 +43,21 @@ class Media(DecBase):
     value = Column(String(1024))
     ideaid = Column(Integer, ForeignKey('ideas.id'))
     idea = relationship('Idea', backref='media')
+    userid = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', backref='media')
 
-    def _init__(self, type, value, ideaid):
+    def __init__(self, type, ideaid, userid, value=None):
         self.type = type
         self.value = value
-        self.ideaid = self.ideaid
+        self.ideaid = ideaid
+        self.userid = userid
+
+    def json(self, request):
+        return {
+            "id": self.id,
+            "type": self.type,
+            "value": self.value if self.type == 1 else request.url('static', pathspec=self.value, qualified=True)
+        }
 
 
 class Transcription(DecBase):
