@@ -10,6 +10,13 @@ class User(DecBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(64))
     password = Column(String(256))
+    gravatar = Column(String(128))
+
+    def json(self, request):
+        return {
+            "username": self.username,
+            "gravatar": self.gravatar
+        }
 
 
 class APIToken(DecBase):
