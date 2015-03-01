@@ -21,7 +21,7 @@ class Comment(DecBase):
     def json(self, request):
         return {
             "idea": request.url('get_idea', ideaid=self.ideaid),
-            "user": request.url('user', userid=self.userid),
+            "user": self.user.json(request),
             "message": self.message
         }
 

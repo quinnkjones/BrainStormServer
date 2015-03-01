@@ -22,6 +22,7 @@ def map_routes(app):
     app.map_connect('media_list', '/api/media', controller='mediacontroller', action='get_media_list')
     app.map_connect('media_obj', '/api/media/{mid}', controller='mediacontroller', action='get_media')
     app.map_connect('login', '/api/auth', controller='apicontroller', action='login')
+    app.map_connect('user', '/api/user/{userid}', controller='apicontroller', action='get_user')
     app.map_connect('static', '/static/{pathspec:.+}', action=static)
 
 
