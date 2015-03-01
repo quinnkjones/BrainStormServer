@@ -6,21 +6,24 @@ from brainstorm.sql import Idea, Session, Media, Transcription
 from brainstorm.utils import RESTful, auth_required
 import speech_recognition as sr
 
+import logging
 
-def recognize(source, mid):
+
+def recognize(sourceFile, mid):
     r = sr.Recognizer()
-    audio = r.record(source)  # extract audio data from the file
-
-    try:
-        list = r.recognize(audio, True)  # generate a list of possible transcriptions
-        Session().add(Transcription(mid, list[0]["text"]))
+    with sr.WavFile(sourceFile) as source:
+        audio = r.record(source)  # extract audio data from the file
+        logging.basicConfig(filename='/home/quinn/example.log',level=logging.DEBUG)
         try:
-            Session().commit()
-        except:
-            Session().rollback()
+            list = r.recognize(audio, True)  # generate a list of possible transcriptions
+            Session().add(Transcription(mid, list[0]["text"]))
+            try:
+                Session().commit()
+            except:
+                Session().rollback()
 
-    except LookupError:
-        print("Whoops")
+        except LookupError:
+            print("Whoops")
 
 
 class IdeaController(object):
@@ -58,6 +61,10 @@ class MediaController(object):
     @auth_required
     @renderer('prettyjson')
     def get_media_list(self, request, response):
+
+
+        
+        
         if request.env['REQUEST_METHOD'].upper() == 'POST':
             ideaid = int(request.POST['idea'])
             type_ = int(request.POST['type'])
@@ -73,8 +80,11 @@ class MediaController(object):
                 media.value = value
             elif type_ == 2:
                 path = os.path.join('media', '%i.wav' % media.id)
+
                 fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
                 shutil.copyfileobj(request.POST['value'].file, fid)
+                fid.close()
+                recognize(os.path.join(request.settings['staticdir'],path),media.id)
                 media.value = path
             elif type_ == 3:
                 path = os.path.join('media', '%i.mp4' % media.id)
