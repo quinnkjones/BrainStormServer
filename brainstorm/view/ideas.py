@@ -14,17 +14,18 @@ def recognize(source, mid):
     try:
         list = r.recognize(audio, True)  # generate a list of possible transcriptions
         Session().add(Transcription(mid, list[0]["text"]))
-    try:
-        Session().commit()
-    except:
-        Session().rollback()
+        try:
+            Session().commit()
+        except:
+            Session().rollback()
 
-    except LookupError:  # speech is unintelligible
+    except LookupError:
+        print("Whoops")
 
 
 class IdeaController(object):
-    @auth_required
     @RESTful(['GET', 'POST'])
+    @auth_required
     @renderer('prettyjson')
     def ideas(self, request, response):
         if request.env['REQUEST_METHOD'].upper() == 'GET':
@@ -41,8 +42,8 @@ class IdeaController(object):
                 raise HTTPInternalServerError()
             raise HTTPMoved(location=request.url('get_idea', ideaid=idea.id))
 
-    @auth_required
     @RESTful(['GET', 'PUT', 'POST', 'DELETE'])
+    @auth_required
     @renderer('prettyjson')
     def idea(self, request, response):
         if request.env['REQUEST_METHOD'].upper() == 'GET':
@@ -53,8 +54,8 @@ class IdeaController(object):
 
 
 class MediaController(object):
-    @auth_required
     @RESTful(['GET', 'POST'])
+    @auth_required
     @renderer('prettyjson')
     def get_media_list(self, request, response):
         if request.env['REQUEST_METHOD'].upper() == 'POST':
@@ -95,8 +96,8 @@ class MediaController(object):
             raise HTTPMoved(location=request.url('media_obj', mid=media.id))
         return [request.url('media_obj', mid=i.id, qualified=True) for i in request.user.media]
 
-    @auth_required
     @RESTful(['GET', 'POST'])
+    @auth_required
     @renderer('prettyjson')
     def get_media(self, request, response):
         media = Session().query(Media).filter(Media.id == int(request.matchdict['mid'])).scalar()

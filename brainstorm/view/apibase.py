@@ -14,7 +14,7 @@ class APIController(object):
     def get_base(self, request, response):
         return {
             "login": request.url('login', qualified=True),
-            "ideas": request.url('idea_list', qualified=True),
+            "ideas": request.url('get_ideas', qualified=True),
             "media": request.url('media_list', qualified=True)
         }
 

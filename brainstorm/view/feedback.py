@@ -5,8 +5,8 @@ from brainstorm.utils import RESTful, auth_required
 
 
 class FeedbackController(object):
-    @auth_required
     @RESTful(['GET', 'POST'])
+    @auth_required
     @renderer('prettyjson')
     def comments(self, request, response):
         print("Got there")

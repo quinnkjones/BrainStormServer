@@ -26,13 +26,14 @@ class RESTful(object):
                 req = args[1]
                 res = args[2]
 
+            res.headers['Access-Control-Allow-Origin'] = '*'  # Should be sane in production
+            res.headers['Access-Control-Allow-Headers'] = 'Authorization'
             if req.env['REQUEST_METHOD'].upper() == 'OPTIONS':
                 res.headers['Allow'] = ', '.join(self.methods)
                 return res
             elif req.env['REQUEST_METHOD'].upper() not in self.methods:
                 return HTTPErrorResponse("405 Method Not Allowed", None)
             return func(*args, **kwargs)
-
         return check_method
 
 
