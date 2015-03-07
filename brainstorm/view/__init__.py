@@ -1,12 +1,14 @@
 import mimetypes
 import os
 from distill.exceptions import HTTPNotFound, HTTPForbidden
+from brainstorm.utils import auth_required
 
 
 def add_controllers(app_):
     from .ideas import IdeaController, MediaController
     from .apibase import APIController
     from .feedback import FeedbackController
+    from .home import FrontController
 
     loc = locals().copy()
     del loc['app_']
@@ -14,6 +16,7 @@ def add_controllers(app_):
 
 
 def map_routes(app):
+    app.map_connect('home', '/', controller='frontcontroller', action='home')
     app.map_connect('api_base', '/api', controller='apicontroller', action='get_base')
     app.map_connect('get_ideas', '/api/ideas', controller='ideacontroller', action='ideas')
     app.map_connect('get_idea', '/api/ideas/{ideaid}', controller='ideacontroller', action='idea')
@@ -27,6 +30,7 @@ def map_routes(app):
     app.map_connect('static', '/static/{pathspec:.+}', action=static)
 
 
+@auth_required
 def static(request, response):
     path = os.path.join(request.settings['staticdir'], request.matchdict['pathspec'])
     if os.path.isfile(path):
