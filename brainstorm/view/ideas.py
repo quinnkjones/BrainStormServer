@@ -2,9 +2,10 @@ import os
 from distill.exceptions import HTTPNotFound, HTTPInternalServerError, HTTPMoved
 from distill.renderers import renderer
 import shutil
-from brainstorm.sql import Idea, Session, Media, Transcription
+from brainstorm.sql import Idea,User, Session, Media, Transcription
 from brainstorm.utils import RESTful, auth_required
 import speech_recognition as sr
+from multiprocessing import Process
 
 import logging
 
@@ -34,10 +35,12 @@ class IdeaController(object):
         if request.env['REQUEST_METHOD'].upper() == 'GET':
             return [request.url('get_idea', ideaid=i.id, qualified=True) for i in request.user.ideas]
         elif request.env['REQUEST_METHOD'].upper() == 'POST':
-            desc = request.POST['desc']
-            title = request.POST['title']
-            idea = Idea(title, desc, request.user.id)
+            type_ = int(request.POST['type'])
+            idea = Idea(request.user.id)
+            media = Media(type_,idea.id ,request.user.id)
             Session().add(idea)
+            Session().add(media)
+            p = Process(target = recognize, args = (media.id,))
             try:
                 Session().commit()
             except:
