@@ -1,3 +1,4 @@
+
 from sqlalchemy import String, Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from brainstorm.sql import DecBase
@@ -13,8 +14,9 @@ class Idea(DecBase):
     userid = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref='ideas')
     timestamp = Column(Integer)
+    focusarea = Column(String(64))
 
-    def __init__(self, title, description, userid, progress=0, timestamp=None):
+    def __init__(self, title, description, userid, progress=0, timestamp=None, focus = None):
         self.title = title
         self.desc = description
         self.userid = userid
@@ -23,6 +25,7 @@ class Idea(DecBase):
             self.timestamp = timestamp
         else:
             self.timestamp = round(time.time())
+        self.focusarea = focus
 
     def json(self, request):
         return {
@@ -31,7 +34,8 @@ class Idea(DecBase):
             "desc": self.desc,
             "user": request.url('user', userid=self.userid),
             "media": [request.url('media_obj', mid=i.id, qualified=True) for i in self.media],
-            "comments": [request.url('get_comment', cid=i.id, qualified=True) for i in self.comments]
+            "comments": [request.url('get_comment', cid=i.id, qualified=True) for i in self.comments],
+            "focusarea": self.focusarea
         }
 
 

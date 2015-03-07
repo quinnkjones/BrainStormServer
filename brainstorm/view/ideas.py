@@ -55,15 +55,28 @@ class IdeaController(object):
                 raise HTTPNotFound()
             return idea
 
+    @RESTful(['GET','POST'])
+    @auth_required
+    @renderer('prettyjson')
+    def focus_connect(self,request,response):
+        if request.env['REQUEST_METHOD'].upper() == 'GET':
+            idea = Session().query(Idea).filter(Idea.id == int(request.matchdict['ideaid'])).scalar()
+            f = idea.focusarea
+            users = Session.query(User).filter(User.speciality == f).all()
+            return users if not users is None else []
+        elif request.env['REQUEST_METHOD'].upper() == 'POST':
+            focus = request.POST['focus']
+            idea = Session().query(Idea).filter(Idea.id == int(request.matchdict['ideaid'])).scalar()
+            idea.focusarea = focus
+            Session.commit()
+            
+
 
 class MediaController(object):
     @RESTful(['GET', 'POST'])
     @auth_required
     @renderer('prettyjson')
-    def get_media_list(self, request, response):
-
-
-        
+    def get_media_list(self, request, response):   
         
         if request.env['REQUEST_METHOD'].upper() == 'POST':
             ideaid = int(request.POST['idea'])
@@ -80,7 +93,6 @@ class MediaController(object):
                 media.value = value
             elif type_ == 2:
                 path = os.path.join('media', '%i.wav' % media.id)
-
                 fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
                 shutil.copyfileobj(request.POST['value'].file, fid)
                 fid.close()
@@ -91,12 +103,19 @@ class MediaController(object):
                 fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
                 shutil.copyfileobj(request.POST['value'].file, fid)
                 media.value = path
+                fid.close()
             elif type_ == 4:
                 path = os.path.join('media', '%i.jpg' % media.id)
-                print(os.path.join(request.settings['staticdir'], path))
                 fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
                 shutil.copyfileobj(request.POST['value'].file, fid)
                 media.value = path
+                fid.close()
+            elif type_ == 5:
+                path = os.path.join('media', '%i' % media.id)
+                fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
+                shutil.copyfileobj(request.POST['value'].file, fid)
+                media.value = path
+                fid.close()
             Session().add(media)
             try:
                 Session().commit()
