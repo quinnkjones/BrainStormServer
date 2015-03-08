@@ -11,7 +11,7 @@ except ImportError:
 try:
     from ConfigParser import SafeConfigParser
 except ImportError:
-    from configparser import ConfigParser as SafeConfigParser
+    import ConfigParser as SafeConfigParser
 import os
 
 from brainstorm import main
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         if DEBUG is not None and DEBUG.lower() == "true":
             from werkzeug.debug import DebuggedApplication
             application = DebuggedApplication(application, evalex=True)
-        run_simple('mydea.io', 8080, application, use_reloader=DEBUG)
+        run_simple('localhost', 8080, application, use_reloader=DEBUG)
         
     except ImportError:
         from wsgiref.simple_server import make_server, WSGIServer
