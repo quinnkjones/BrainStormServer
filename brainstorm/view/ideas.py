@@ -56,15 +56,16 @@ class IdeaController(object):
             fid.close()
             media.value = path
 
-            p = Process(target = recognize, args = (os.path.join(request.settings['staticdir'],path),media.id,))
-            p.start()
-
             try:
                 Session().commit()
             except:
                 Session().rollback()
                 raise HTTPInternalServerError()
+            p = Process(target = recognize, args = (os.path.join(request.settings['staticdir'],path),media.id,))
+            p.start()
             raise HTTPMoved(location=request.url('get_idea', ideaid=idea.id))
+
+
 
     @RESTful(['GET', 'PUT', 'POST', 'DELETE'])
     @auth_required
