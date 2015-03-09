@@ -20,7 +20,6 @@ def recognize(sourceFile, mid):
             logging.debug('finished transcription'+ list[0]["text"])# generate a list of possible transcriptions
             t = Transcription(mid, list[0]["text"])
             Session().add(t)
-            m = Session().query(Media).filter(Media.id == mid).one()
 
 
             try:
