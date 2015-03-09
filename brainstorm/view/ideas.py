@@ -26,6 +26,7 @@ def recognize(sourceFile, mid):
                 Session().commit()
             except:
                 Session().rollback()
+                logging.exception('Session had to rollback on transcription')
 
         except LookupError:
             print("Whoops")
