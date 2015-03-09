@@ -14,7 +14,7 @@ def recognize(sourceFile, mid):
     r = sr.Recognizer()
     with sr.WavFile(sourceFile) as source:
         audio = r.record(source)  # extract audio data from the file
-        logging.basicConfig(filename='./example.log',level=logging.DEBUG)
+        logging.basicConfig(filename = './example.log',level=logging.DEBUG)
         try:
             list = r.recognize(audio, True)
             logging.debug('finished transcription'+ list[0]["text"])# generate a list of possible transcriptions
@@ -27,6 +27,7 @@ def recognize(sourceFile, mid):
             except:
                 Session().rollback()
                 logging.exception('Session had to rollback on transcription')
+            Session().cleanup()
 
         except LookupError:
             print("Whoops")
