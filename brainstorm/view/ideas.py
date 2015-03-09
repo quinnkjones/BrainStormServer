@@ -5,7 +5,7 @@ import shutil
 from brainstorm.sql import Idea, Session, Media, Transcription,User
 from brainstorm.utils import RESTful, auth_required
 import speech_recognition as sr
-from multiprocessing import Process
+from threading import Thread
 
 import logging
 
@@ -62,7 +62,7 @@ class IdeaController(object):
             except:
                 Session().rollback()
                 raise HTTPInternalServerError()
-            p = Process(target = recognize, args = (os.path.join(request.settings['staticdir'],path),media.id,))
+            p = Thread(target = recognize, args = (os.path.join(request.settings['staticdir'],path),media.id,))
             p.start()
             raise HTTPMoved(location=request.url('get_idea', ideaid=idea.id))
 
