@@ -161,7 +161,7 @@ class TransController(object):
     @RESTful(['GET'])
     @auth_required
     @renderer('prettyjson')
-    def get_transcription(self,request):
+    def get_transcription(self,request,response):
         transID = request.matchdict['tid']
         logging.basicConfig(filename='./example.log',level=logging.DEBUG)
         logging.debug(str(transID))
