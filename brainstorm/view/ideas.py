@@ -2,7 +2,7 @@ import os
 from distill.exceptions import HTTPNotFound, HTTPInternalServerError, HTTPMoved
 from distill.renderers import renderer
 import shutil
-from brainstorm.sql import Idea,User, Session, Media, Transcription
+from brainstorm.sql import Idea, Session, Media, Transcription,User
 from brainstorm.utils import RESTful, auth_required
 import speech_recognition as sr
 from multiprocessing import Process
