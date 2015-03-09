@@ -1,0 +1,100 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+.left-info {
+    height: 100%;
+    min-width: 264px;
+    border-right: 1px solid rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.left-info .brand {
+    min-height: 64px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    padding: 16px;
+}
+
+.left-info .user-info {
+    height: 100%;
+    width: 100%;
+    display: block;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 12px;
+}
+
+.left-info .user-info .acorn {
+    height: 32px;
+    line-height: 32px;
+    vertical-align: middle;
+}
+
+.left-info .user-info .acorn .color {
+    float: left;
+    width: 6px;
+    height: 100%;
+}
+
+.left-info .user-info .acorn .text {
+    margin-left: 14px;
+}
+
+.mid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.mid .top-bar {
+    height: 64px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    line-height: 64px;
+    vertical-align: middle;
+}
+
+.mid .top-bar .actions {
+    float: left;
+    margin-left: 16px;
+}
+
+.mid .top-bar .have-an-idea {
+    float: right;
+    margin-right: 16px;
+}
+
+.right-bar {
+    min-width: 300px;
+    height: 100%;
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.right-bar .padding {
+    min-height: 64px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.ideas {
+    width: 100%;
+    height: 100%;
+}
+
+.sep {
+    display: inline;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.sep:after {
+    content: "|";
+}
