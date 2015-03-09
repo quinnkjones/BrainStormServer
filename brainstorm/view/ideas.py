@@ -14,7 +14,7 @@ def recognize(sourceFile, mid):
     r = sr.Recognizer()
     with sr.WavFile(sourceFile) as source:
         audio = r.record(source)  # extract audio data from the file
-        logging.basicConfig(filename='/home/quinn/example.log',level=logging.DEBUG)
+        logging.basicConfig(filename='./example.log',level=logging.DEBUG)
         try:
             list = r.recognize(audio, True)
             logging.debug('finished transcription'+ list[0]["text"])# generate a list of possible transcriptions
@@ -41,7 +41,7 @@ class IdeaController(object):
             return [request.url('get_idea', ideaid=i.id, qualified=True) for i in request.user.ideas]
         elif request.env['REQUEST_METHOD'].upper() == 'POST':
 
-            logging.basicConfig(filename='/home/quinn/example.log',level=logging.DEBUG)
+            logging.basicConfig(filename='./example.log',level=logging.DEBUG)
 
             idea = Idea(request.user.id)
             Session().add(idea)
@@ -161,7 +161,7 @@ class TransController(object):
     @renderer('prettyjson')
     def get_transcription(self,request):
         transID = request.matchdict['tid']
-        logging.basicConfig(filename='/home/quinn/example.log',level=logging.DEBUG)
+        logging.basicConfig(filename='./example.log',level=logging.DEBUG)
         logging.debug(str(transID))
         transc = Session().query(Transcription).filter(Transcription.id == int(transID)).scalar()
         logging.debug(str(transc))
