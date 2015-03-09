@@ -25,7 +25,7 @@ def map_routes(app):
     app.map_connect('get_comment', '/api/comments/{cid}', controller='feedbackcontroller', action='comment')
     app.map_connect('media_list', '/api/media', controller='mediacontroller', action='get_media_list')
     app.map_connect('media_obj', '/api/media/{mid}', controller='mediacontroller', action='get_media')
-    app.map_connect('get_transcription','api/trans/{tid}',controller = 'transcontroller',action = 'get_transcription')
+    app.map_connect('get_transcription','/api/trans/{tid}',controller = 'transcontroller',action = 'get_transcription')
     # app.map_connect('focus_connect','/api/ideas/{ideaid}/connect',controller='ideacontroller',action='make_connections')
     app.map_connect('login', '/api/auth', controller='apicontroller', action='login')
     app.map_connect('user', '/api/user/{userid}', controller='apicontroller', action='get_user')
