@@ -2,7 +2,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${req.url('static', pathspec='css/app.css')}"
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${req.url('static', pathspec='css/app.css')}">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -49,9 +50,27 @@
             <div class="ideas">
                 <div class="idea">
                     <div class="likes">
+                        <a class="like"><i class="fa fa-caret-up fa-lg"></i></a>
+                        <div class="like-count">14</div>
+                        <a class="dislike"><i class="fa fa-caret-down fa-lg"></i></a>
                     </div>
                     <div class="avatar">
                         <img src="//gravatar.com/avatar/7b68846042f5e0ab26ec7a7aa38ebdb3">
+                    </div>
+                </div>
+                <div class="idea">
+                    <div class="likes">
+                        <a class="like"><i class="fa fa-caret-up fa-lg"></i></a>
+                        <div class="like-count">14</div>
+                        <a class="dislike"><i class="fa fa-caret-down fa-lg"></i></a>
+                    </div>
+                    <div class="avatar">
+                        <img src="//gravatar.com/avatar/7b68846042f5e0ab26ec7a7aa38ebdb3">
+                    </div>
+                    <div class="details">
+                        <div class="poster">
+                            Posted by <a href="#">Quinn</a> in <a href="#">BrainCase</a>
+                        </div>
                     </div>
                 </div>
             </div>
