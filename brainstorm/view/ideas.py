@@ -6,7 +6,7 @@ from brainstorm.sql import Idea, Session, Media, Transcription,User
 from brainstorm.utils import RESTful, auth_required
 import speech_recognition as sr
 from threading import Thread
-
+import subprocess
 import logging
 
 
@@ -50,11 +50,28 @@ class IdeaController(object):
             media = Media(2,idea.id ,request.user.id)
             Session().add(media)
             Session().commit()
-            logging.debug(str(media.id))
-            path = os.path.join('media', '%i.wav' % media.id)
-            fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
-            shutil.copyfileobj(request.POST['value'].file, fid)
-            fid.close()
+
+            ext = request.POST['ext']
+
+
+
+            if ext !='wav':
+                path1 = os.path.join('media',str(media.id)+'.'+ext)
+                source = os.path.join(request.settings['staticdir'],path1)
+                fid = open(os.path.join(request.settings['staticdir'],path1),'wb')
+                shutil.copyfileobj(request.POST['value'].file,fid)
+                fid.close()
+                path = os.path.join('media', '%i.wav' % media.id)
+                dest = os.path.join(request.settings['staticdir'], path)
+                ret = subprocess.call(['avconv','-i',source,dest])
+                ret = subprocess.call(['rm',source])
+            else:
+                path = os.path.join('media', '%i.wav' % media.id)
+                fid = open(os.path.join(request.settings['staticdir'], path), 'wb')
+                shutil.copyfileobj(request.POST['value'].file, fid)
+                fid.close()
+
+
             media.value = path
 
             try:
