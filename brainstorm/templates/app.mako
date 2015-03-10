@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="Mydea">
     <head>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -7,8 +7,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="${req.url('static', pathspec='lib/Mydea.js')}"></script>
     </head>
-    <body>
+    <body ng-controller="RestController">
         <div class="left-info">
             <div class="brand">
                 Mydea
@@ -57,6 +58,18 @@
                     <div class="avatar">
                         <img src="//gravatar.com/avatar/7b68846042f5e0ab26ec7a7aa38ebdb3">
                     </div>
+                    <div class="details">
+                        <div class="poster">
+                            Posted by <a href="#">Quinn</a> in <a href="#">BrainCase</a>
+                        </div>
+                        <div class="transcription">
+                            <i>No transcription available</i>
+                        </div>
+                        <div class="actions">
+                            <i class="fa fa-play-circle"></i>
+                            <i class="fa fa-comment"></i>
+                        </div>
+                    </div>
                 </div>
                 <div class="idea">
                     <div class="likes">
@@ -70,6 +83,13 @@
                     <div class="details">
                         <div class="poster">
                             Posted by <a href="#">Quinn</a> in <a href="#">BrainCase</a>
+                        </div>
+                        <div class="transcription">
+                            <i>No transcription available</i>
+                        </div>
+                        <div class="actions">
+                            <i class="fa fa-play-circle"></i>
+                            <i class="fa fa-comment"></i>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ except ImportError:
 try:
     from ConfigParser import SafeConfigParser
 except ImportError:
-    from configparser import ConfigParser as SafeConfigParser
+    import ConfigParser as SafeConfigParser
 import os
 
 from brainstorm import main
@@ -31,7 +31,7 @@ if __name__ == '__main__':
             from werkzeug.debug import DebuggedApplication
             application = DebuggedApplication(application, evalex=True)
         run_simple('localhost', 5000, application, use_reloader=DEBUG)
-        
+
     except ImportError:
         from wsgiref.simple_server import make_server, WSGIServer
         class ThreadedWSGIServer(ThreadingMixIn, WSGIServer):

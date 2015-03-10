@@ -54,6 +54,9 @@ def auth_required(func):
 def check_auth(req, res):
     if 'authorization' in req.headers:
         token = Session().query(APIToken).filter(APIToken.token == req.headers['authorization']).scalar()
-        req.user = token.user
+        if token:
+            req.user = token.user
+        else:
+            req.user = None
     else:
         req.user = None
