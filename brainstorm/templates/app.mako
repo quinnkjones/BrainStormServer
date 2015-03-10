@@ -49,14 +49,14 @@
                 </div>
             </div>
             <div class="ideas">
-                <div class="idea">
+                <div class="idea" ng-repeat="idea_url in ideas" ng-controller="IdeaController" ng-init="load_idea(idea_url)">
                     <div class="likes">
-                        <a class="like"><i class="fa fa-caret-up fa-lg"></i></a>
-                        <div class="like-count">14</div>
-                        <a class="dislike"><i class="fa fa-caret-down fa-lg"></i></a>
+                        <a class="like" ng-click="idea.likes = idea.likes + 1;"><i class="fa fa-caret-up fa-lg"></i></a>
+                        <div class="like-count">{{idea.likes}}</div>
+                        <a class="dislike" ng-click="idea.likes = idea.likes - 1"><i class="fa fa-caret-down fa-lg"></i></a>
                     </div>
-                    <div class="avatar">
-                        <img src="//gravatar.com/avatar/7b68846042f5e0ab26ec7a7aa38ebdb3">
+                    <div class="avatar" ng-controller="UserController" ng-init="init_user(idea.user)">
+                        <img ng-src="{{user.gravatar}}">
                     </div>
                     <div class="details">
                         <div class="poster">
@@ -66,30 +66,9 @@
                             <i>No transcription available</i>
                         </div>
                         <div class="actions">
-                            <i class="fa fa-play-circle"></i>
-                            <i class="fa fa-comment"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="idea">
-                    <div class="likes">
-                        <a class="like"><i class="fa fa-caret-up fa-lg"></i></a>
-                        <div class="like-count">14</div>
-                        <a class="dislike"><i class="fa fa-caret-down fa-lg"></i></a>
-                    </div>
-                    <div class="avatar">
-                        <img src="//gravatar.com/avatar/7b68846042f5e0ab26ec7a7aa38ebdb3">
-                    </div>
-                    <div class="details">
-                        <div class="poster">
-                            Posted by <a href="#">Quinn</a> in <a href="#">BrainCase</a>
-                        </div>
-                        <div class="transcription">
-                            <i>No transcription available</i>
-                        </div>
-                        <div class="actions">
-                            <i class="fa fa-play-circle"></i>
-                            <i class="fa fa-comment"></i>
+                            <a><i class="fa fa-play-circle"></i></a>
+                            <a><i class="fa fa-comment"></i></a>
+                            <i class="comment-count">0 comments</i>
                         </div>
                     </div>
                 </div>

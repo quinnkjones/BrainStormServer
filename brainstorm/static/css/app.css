@@ -133,6 +133,16 @@ body {
     height: 100%;
 }
 
+.mid .ideas .idea .details .actions a {
+    color: #aaa;
+}
+
+
+.mid .ideas .idea .details .actions .comment-count {
+    color: #aaa;
+    font-size: 10pt;
+}
+
 .mid .ideas .idea:nth-of-type(even) {
     background-color: #eee;
 }

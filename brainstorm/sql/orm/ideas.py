@@ -12,7 +12,6 @@ class Idea(DecBase):
     user = relationship('User', backref='ideas')
     timestamp = Column(Integer)
 
-
     def __init__(self, userid, progress=0, timestamp=None):
 
         self.userid = userid
@@ -22,16 +21,15 @@ class Idea(DecBase):
         else:
             self.timestamp = round(time.time())
 
-
     def json(self, request):
         return {
             "id": self.id,
-            "user": request.url('user', userid=self.userid),
+            "user": request.url('user', userid=self.userid, qualified=True),
             "media": [request.url('media_obj', mid=i.id, qualified=True) for i in self.media],
             "transcription": request.url('get_transcription', tid=self.media[0].transcription.id, qualified=True) if
             self.media[0].transcription else [],
             "comments": [request.url('get_comment', cid=i.id, qualified=True) for i in self.comments],
-
+            "likes": 0
         }
 
 

@@ -27,7 +27,8 @@ app.controller('MediaController', function($scope,$http){
 
 app.controller('IdeaController',function($scope,$http){
 	$scope.idea = null;
-	$scope.load_media = function(url){
+	$scope.load_idea = function(url) {
+        console.log(url);
 		$http.get(url).success(function(d){
 			$scope.idea = d;
 		});
@@ -45,12 +46,14 @@ app.controller('CommentController', function($scope, $http){
 
 app.controller('UserController', function($scope, $http){
     $scope.user = null;
-    $scope.init_user = function(url){
-        console.log(url);
-        $http.get(url).success(function(data){
+    $scope.user_url = undefined;
+    $scope.$watch('user_url', function(){
+        if($scope.user_url === undefined)
+            return;
+        $http.get($scope.user_url).success(function(data){
             $scope.user = data;
         });
-    };
+    });
 });
 
 app.run(function($http) {
