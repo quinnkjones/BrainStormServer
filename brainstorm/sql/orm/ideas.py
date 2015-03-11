@@ -1,4 +1,3 @@
-
 from sqlalchemy import String, Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from brainstorm.sql import DecBase
@@ -13,7 +12,6 @@ class Idea(DecBase):
     user = relationship('User', backref='ideas')
     timestamp = Column(Integer)
 
-
     def __init__(self, userid, progress=0, timestamp=None):
 
         self.userid = userid
@@ -23,15 +21,15 @@ class Idea(DecBase):
         else:
             self.timestamp = round(time.time())
 
-
     def json(self, request):
         return {
             "id": self.id,
-            "user": request.url('user', userid=self.userid),
+            "user": request.url('user', userid=self.userid, qualified=True),
             "media": [request.url('media_obj', mid=i.id, qualified=True) for i in self.media],
-            "transcription" : request.url('get_transcription',tid = self.media[0].transcription.id,qualified= True) if self.media[0].transcription else [],
+            "transcription": request.url('get_transcription', tid=self.media[0].transcription.id, qualified=True) if
+            self.media[0].transcription else [],
             "comments": [request.url('get_comment', cid=i.id, qualified=True) for i in self.comments],
-
+            "likes": 0
         }
 
 
@@ -46,7 +44,6 @@ class Media(DecBase):
     userid = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref='media')
 
-
     def __init__(self, type, ideaid, userid, value=None):
         self.type = type
         self.value = value
@@ -57,7 +54,8 @@ class Media(DecBase):
         return {
             "id": self.id,
             "type": self.type,
-            "transcription" : request.url('get_transcription',tid = self.transcription.id,qualified = True) if self.transcription else [],
+            "transcription": request.url('get_transcription', tid=self.transcription.id,
+                                         qualified=True) if self.transcription else None,
             "value": self.value if self.type == 1 else request.url('static', pathspec=self.value, qualified=True)
         }
 
@@ -74,7 +72,7 @@ class Transcription(DecBase):
         self.mediaid = media
         self.transcription = transcription
 
-    def json(self,request):
+    def json(self, request):
         return {
-            "value":self.transcription
+            "value": self.transcription
         }

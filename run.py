@@ -9,9 +9,9 @@ try:
 except ImportError:
     from SocketServer import ThreadingMixIn
 try:
-    from ConfigParser import SafeConfigParser
+    from configparser import SafeConfigParser
 except ImportError:
-    import ConfigParser as SafeConfigParser
+    from ConfigParser import ConfigParser as SafeConfigParser
 import os
 
 from brainstorm import main
@@ -30,11 +30,11 @@ if __name__ == '__main__':
         if DEBUG is not None and DEBUG.lower() == "true":
             from werkzeug.debug import DebuggedApplication
             application = DebuggedApplication(application, evalex=True)
-        run_simple('localhost', 8080, application, use_reloader=DEBUG)
-        
+        run_simple('localhost', 5000, application, use_reloader=DEBUG)
+
     except ImportError:
         from wsgiref.simple_server import make_server, WSGIServer
         class ThreadedWSGIServer(ThreadingMixIn, WSGIServer):
             pass
-        server = make_server('', 8080, application, server_class=ThreadedWSGIServer)
+        server = make_server('', 5000, application, server_class=ThreadedWSGIServer)
         server.serve_forever()
