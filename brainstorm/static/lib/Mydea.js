@@ -10,8 +10,8 @@ app.controller('RestController', function($scope, $http) {
 			$scope.ideas = d;
 		}); 
 	});
-    $scope.add_idea = function(idea){
-        $http.post($scope.urls.ideas, {title: "", desc: idea});
+    $scope.add_idea = function(){
+        $http.post($scope.urls.ideas);
     };
 });
 
@@ -25,38 +25,37 @@ app.controller('MediaController', function($scope,$http){
 });
 
 
-app.controller('IdeaController',function($scope,$http){
-	$scope.idea = null;
+app.controller('IdeaController',function($scope, $http, userFactory, transcriptionFactory){
 	$scope.load_idea = function(url) {
-        console.log(url);
 		$http.get(url).success(function(d){
+            console.log(d);
 			$scope.idea = d;
+            userFactory($scope.idea.user, $scope);
+            transcriptionFactory($scope.idea.transcription, $scope);
 		});
 	};
 });
 
-app.controller('CommentController', function($scope, $http){
-    $scope.comment = null;
-    $scope.init_comment = function(url){
+app.factory('userFactory', function($http){
+    function User(url, $scope){
         $http.get(url).success(function(data){
-            $scope.comment = data;
-        });
-    };
+            $scope.idea.user = data;
+        })
+    }
+    return User;
 });
 
-app.controller('UserController', function($scope, $http){
-    $scope.user = null;
-    $scope.user_url = undefined;
-    $scope.$watch('user_url', function(){
-        if($scope.user_url === undefined)
-            return;
-        $http.get($scope.user_url).success(function(data){
-            $scope.user = data;
-        });
-    });
+app.factory('transcriptionFactory', function($http){
+    function Transcription(url, $scope){
+        $http.get(url).success(function(data){
+            $scope.idea.transcription = data.value;
+        })
+    }
+    return Transcription
 });
 
 app.run(function($http) {
-  $http.defaults.headers.common.Authorization = '6969';
+    $http.defaults.headers.common.Authorization = '6969';
+    $http.defaults.cache = true;
 });
 

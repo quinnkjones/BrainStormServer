@@ -9,7 +9,7 @@ try:
 except ImportError:
     from SocketServer import ThreadingMixIn
 try:
-    from ConfigParser import SafeConfigParser
+    from configparser import SafeConfigParser
 except ImportError:
     import ConfigParser as SafeConfigParser
 import os

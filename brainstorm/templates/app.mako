@@ -55,20 +55,19 @@
                         <div class="like-count">{{idea.likes}}</div>
                         <a class="dislike" ng-click="idea.likes = idea.likes - 1"><i class="fa fa-caret-down fa-lg"></i></a>
                     </div>
-                    <div class="avatar" ng-controller="UserController" ng-init="init_user(idea.user)">
-                        <img ng-src="{{user.gravatar}}">
+                    <div class="avatar">
+                        <img ng-src="{{idea.user.gravatar}}">
                     </div>
                     <div class="details">
                         <div class="poster">
-                            Posted by <a href="#">Quinn</a> in <a href="#">BrainCase</a>
+                            Posted by <a href="#">{{idea.user.username}}</a> in <a href="#">BrainCase</a>
                         </div>
                         <div class="transcription">
-                            <i>No transcription available</i>
+                            <i ng-if="idea.transcription === undefined">No transcription available</i>
+                            <span ng-if="idea.transcription !== undefined">{{idea.transcription}}</span>
                         </div>
                         <div class="actions">
-                            <a><i class="fa fa-play-circle"></i></a>
-                            <a><i class="fa fa-comment"></i></a>
-                            <i class="comment-count">0 comments</i>
+                            <i class="comment-count">{{idea.comments.length}} comments</i>
                         </div>
                     </div>
                 </div>

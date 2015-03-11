@@ -17,7 +17,7 @@ class User(DecBase):
     def json(self, request):
         return {
             "username": self.username,
-            "gravatar": "//gravatar.com/%s" % hashlib.md5(self.gravatar).hexdigest(),
+            "gravatar": "//gravatar.com/avatar/%s" % hashlib.md5(bytes(self.gravatar, 'utf-8')).hexdigest(),
             "speciality":self.speciality
         }
 

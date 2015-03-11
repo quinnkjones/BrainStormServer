@@ -44,7 +44,6 @@ class Media(DecBase):
     userid = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref='media')
 
-
     def __init__(self, type, ideaid, userid, value=None):
         self.type = type
         self.value = value
@@ -56,7 +55,7 @@ class Media(DecBase):
             "id": self.id,
             "type": self.type,
             "transcription": request.url('get_transcription', tid=self.transcription.id,
-                                         qualified=True) if self.transcription else [],
+                                         qualified=True) if self.transcription else None,
             "value": self.value if self.type == 1 else request.url('static', pathspec=self.value, qualified=True)
         }
 
