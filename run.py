@@ -11,7 +11,7 @@ except ImportError:
 try:
     from configparser import SafeConfigParser
 except ImportError:
-    import ConfigParser as SafeConfigParser
+    from ConfigParser import ConfigParser as SafeConfigParser
 import os
 
 from brainstorm import main

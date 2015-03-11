@@ -3,3 +3,4 @@ config.ini
 media/
 *.pyc
 uwsgi.log
+example.log

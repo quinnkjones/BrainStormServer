@@ -147,6 +147,10 @@ body {
     background-color: #eee;
 }
 
+.mid .ideas .idea:hover {
+    background-color: #ccc;
+}
+
 .sep {
     display: inline;
     margin-left: 4px;

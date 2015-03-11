@@ -12,13 +12,11 @@ class User(DecBase):
     username = Column(String(64))
     password = Column(String(256))
     gravatar = Column(String(128))
-    speciality = Column(String(64))
 
     def json(self, request):
         return {
             "username": self.username,
-            "gravatar": "//gravatar.com/avatar/%s" % hashlib.md5(bytes(self.gravatar, 'utf-8')).hexdigest(),
-            "speciality":self.speciality
+            "gravatar": "//gravatar.com/avatar/%s" % hashlib.md5(self.gravatar).hexdigest()
         }
 
 
