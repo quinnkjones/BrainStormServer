@@ -1,3 +1,4 @@
+import hashlib
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy import Column, String, Integer, ForeignKey, PrimaryKeyConstraint
 
@@ -11,13 +12,11 @@ class User(DecBase):
     username = Column(String(64))
     password = Column(String(256))
     gravatar = Column(String(128))
-    speciality = Column(String(64))
 
     def json(self, request):
         return {
             "username": self.username,
-            "gravatar": self.gravatar,
-            "speciality":self.speciality
+            "gravatar": "//gravatar.com/avatar/%s" % hashlib.md5(self.gravatar).hexdigest()
         }
 
 

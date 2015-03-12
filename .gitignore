@@ -1,5 +1,6 @@
 config.ini
 .idea/
-static/
+media/
 *.pyc
 uwsgi.log
+example.log

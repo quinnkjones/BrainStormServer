@@ -38,21 +38,25 @@ class RESTful(object):
 
 
 def auth_required(func):
-    def check_auth(*args, **kwargs):
+    def _check_auth(*args, **kwargs):
         if isinstance(args[0], Request):
             req = args[0]
             res = args[1]
         else:
             req = args[1]
             res = args[2]
-
-        if 'authorization' not in req.headers:
+        if not req.user:
             return HTTPForbidden()
-
-        token = Session().query(APIToken).filter(APIToken.token == req.headers['authorization']).scalar()
-        if not token:
-            return HTTPForbidden()
-
-        req.user = token.user
         return func(*args, **kwargs)
-    return check_auth
+    return _check_auth
+
+
+def check_auth(req, res):
+    if 'authorization' in req.headers:
+        token = Session().query(APIToken).filter(APIToken.token == req.headers['authorization']).scalar()
+        if token:
+            req.user = token.user
+        else:
+            req.user = None
+    else:
+        req.user = None

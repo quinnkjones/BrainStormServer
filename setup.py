@@ -8,5 +8,5 @@ setup(
     author='Dreae',
     author_email='penitenttangentt@gmail.com',
     description='I have an idea!',
-    install_requires=['sqlalchemy', 'passlib', 'distill-framework', 'python-swiftclient']
+    install_requires=['sqlalchemy', 'passlib', 'distill-framework', 'python-swiftclient', 'pg8000', 'SpeechRecognition']
 )
