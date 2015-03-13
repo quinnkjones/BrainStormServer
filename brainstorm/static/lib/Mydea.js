@@ -1,4 +1,4 @@
-var app = angular.module('Mydea',[]);
+var app = angular.module('Mydea',['ngAudio']);
 
 app.controller('RestController', function($scope, $http) {
 	$scope.urls = null;
@@ -6,7 +6,7 @@ app.controller('RestController', function($scope, $http) {
 		$scope.urls = d;
 		$scope.ideas = null;
         
-		$http.get($scope.urls.ideas).success(function(d){
+		$http.get($scope.urls.ideas, {cache: false}).success(function(d){
 			$scope.ideas = d;
 		}); 
 	});
@@ -25,33 +25,57 @@ app.controller('MediaController', function($scope,$http){
 });
 
 
-app.controller('IdeaController',function($scope, $http, userFactory, transcriptionFactory){
+app.controller('IdeaController',function($scope, $http, userInitService, trsInitService, mediaListService){
 	$scope.load_idea = function(url) {
 		$http.get(url).success(function(d){
             console.log(d);
 			$scope.idea = d;
-            userFactory($scope.idea.user, $scope);
-            transcriptionFactory($scope.idea.transcription, $scope);
+            userInitService.init_user($scope.idea.user, $scope);
+            trsInitService.init_transcription($scope.idea.transcription, $scope);
+            mediaListService.init_media($scope.idea.media.slice(), $scope);
 		});
 	};
 });
 
-app.factory('userFactory', function($http){
-    function User(url, $scope){
+app.service('userInitService', function($http){
+    this.init_user = function(url, $scope){
         $http.get(url).success(function(data){
             $scope.idea.user = data;
         })
-    }
-    return User;
+    };
 });
 
-app.factory('transcriptionFactory', function($http){
-    function Transcription(url, $scope){
+app.service('trsInitService', function($http){
+    this.init_transcription = function(url, $scope){
         $http.get(url).success(function(data){
             $scope.idea.transcription = data.value;
         })
+    };
+});
+
+app.service('mediaListService', function($http, ngAudio) {
+    function MediaObj(url, $scope){
+        var _this = this;
+        this.load = function(){
+            console.log("Getting " + url);
+            $http.get(url).success(function(data){
+                for(var i in data){
+                    if(data.hasOwnProperty(i)){
+                        _this[i] = data[i];
+                    }
+                }
+                if(data.type === 2){
+                    _this.sound = ngAudio.load(data.value);
+                }
+            });
+        }
     }
-    return Transcription
+    this.init_media = function(media, $scope){
+        $scope.idea.media = [];
+        for(var c = 0; c < media.length; c++){
+            $scope.idea.media[c] = new MediaObj(media[c], $scope);
+        }
+    };
 });
 
 app.run(function($http) {

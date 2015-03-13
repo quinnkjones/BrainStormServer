@@ -7,6 +7,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="${req.url('static', pathspec='lib/angular.audio.js')}"></script>
         <script src="${req.url('static', pathspec='lib/Mydea.js')}"></script>
     </head>
     <body ng-controller="RestController">
@@ -49,7 +50,7 @@
                 </div>
             </div>
             <div class="ideas">
-                <div class="idea" ng-repeat="idea_url in ideas" ng-controller="IdeaController" ng-init="load_idea(idea_url)">
+                <div class="idea" ng-repeat="idea_url in ideas" ng-controller="IdeaController" ng-init="load_idea(idea_url)" ng-click="idea.media[0].sound.play()">
                     <div class="likes">
                         <a class="like" ng-click="idea.likes = idea.likes + 1;"><i class="fa fa-caret-up fa-lg"></i></a>
                         <div class="like-count">{{idea.likes}}</div>

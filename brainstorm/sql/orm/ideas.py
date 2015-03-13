@@ -56,7 +56,7 @@ class Media(DecBase):
             "type": self.type,
             "transcription": request.url('get_transcription', tid=self.transcription.id,
                                          qualified=True) if self.transcription else None,
-            "value": self.value if self.type == 1 else request.url('static', pathspec=self.value, qualified=True)
+            "value": self.value if self.type == 1 else request.url('static', pathspec='media/%s' % self.value, qualified=True)
         }
 
 
