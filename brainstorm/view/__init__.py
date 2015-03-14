@@ -6,7 +6,7 @@ from brainstorm.utils import auth_required
 
 def add_controllers(app_):
     from .ideas import IdeaController, MediaController, TransController
-
+    from .teams import TeamController
     from .apibase import APIController
     from .feedback import FeedbackController
     from .home import FrontController
@@ -29,6 +29,7 @@ def map_routes(app):
     # app.map_connect('focus_connect','/api/ideas/{ideaid}/connect',controller='ideacontroller',action='make_connections')
     app.map_connect('login', '/api/auth', controller='apicontroller', action='login')
     app.map_connect('user', '/api/user/{userid}', controller='apicontroller', action='get_user')
+    app.map_connect('new_team','/api/user/{userid}/team',controller='teamcontroller', action='create_new')
     app.map_connect('static', '/static/{pathspec:.+}', action=static)
 
 
