@@ -29,7 +29,7 @@ def map_routes(app):
     # app.map_connect('focus_connect','/api/ideas/{ideaid}/connect',controller='ideacontroller',action='make_connections')
     app.map_connect('login', '/api/auth', controller='apicontroller', action='login')
     app.map_connect('user', '/api/user/{userid}', controller='apicontroller', action='get_user')
-    app.map_connect('new_team','/api/user/{userid}/team',controller='teamcontroller', action='create_new')
+    app.map_connect('new_team','/api/user/{userid}/newTeam',controller='teamcontroller', action='create_new')
     app.map_connect('static', '/static/{pathspec:.+}', action=static)
 
 

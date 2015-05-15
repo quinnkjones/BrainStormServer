@@ -14,3 +14,6 @@ class TeamController(object):
         userid = request.matchdict['userid']
         newTeam = Teams(userid,request.POST['name'])
         Session().add(newTeam)
+        Session().commit()
+
+        request.POST['data']

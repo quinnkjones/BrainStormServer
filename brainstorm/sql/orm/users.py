@@ -12,10 +12,9 @@ class User(DecBase):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(64))
+    username = Column(String(64),unique = True)
     password = Column(String(256))
     email = Column(String(128))
-    teams = relationship("team",secondary = userteams)
 
     def __init__(self,name,password,email):
         self.username = name
@@ -36,11 +35,12 @@ class Teams(DecBase):
     id = Column(Integer,primary_key = True,autoincrement=True)
     owner = Column(Integer,ForeignKey('user.id'))
     name = Column(String(64))
-    users = relationship("user",secondary = userteams)
+    users = relationship("user",secondary = userteams,backref = 'teams')
 
     def __init__(self,owner,name):
         self.name = name
         self.owner = owner
+        self.users.append(owner)
 
     def json(self,request):
         return {
