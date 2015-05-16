@@ -5,8 +5,8 @@ from brainstorm.sql import DecBase
 
 
 userteams = Table('userteams',DecBase.metadata,
-                  Column('userid',Integer,ForeignKey('user.id')),
-                  Column('teamid',Integer,ForeignKey('team.id')))
+                  Column('userid',Integer,ForeignKey('users.id')),
+                  Column('teamid',Integer,ForeignKey('teams.id')))
 
 class User(DecBase):
     __tablename__ = "users"
@@ -33,9 +33,9 @@ class Teams(DecBase):
     __tablename__ = "teams"
 
     id = Column(Integer,primary_key = True,autoincrement=True)
-    owner = Column(Integer,ForeignKey('user.id'))
+    owner = Column(Integer,ForeignKey('users.id'))
     name = Column(String(64))
-    users = relationship("user",secondary = userteams,backref = 'teams')
+    users = relationship("User",secondary = userteams)
 
     def __init__(self,owner,name):
         self.name = name
